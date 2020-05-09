@@ -19,4 +19,5 @@ def main():
     my_chain.validate_chain()
 
 
-main()
+if __name__ == "__main__":
+    main()
