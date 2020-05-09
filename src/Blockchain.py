@@ -1,4 +1,4 @@
-from Block import Block
+from src.Block import Block
 
 
 class Blockchain:
