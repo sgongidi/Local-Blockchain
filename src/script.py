@@ -1,4 +1,4 @@
-from src.Blockchain import Blockchain
+from Blockchain import Blockchain
 
 
 def main():
