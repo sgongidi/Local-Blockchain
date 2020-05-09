@@ -24,9 +24,8 @@ class Blockchain:
     # Prints full contents of the blockchain
     def print_chain(self):
         for i in range(len(self.chain)):
-            current_block = self.chain[i]
             print(f"Block {i}")
-            current_block.print_contents()
+            self.chain[i].print_contents()
 
     # Verifies linked hashes in chain
     def validate_chain(self):
