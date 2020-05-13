@@ -11,12 +11,10 @@ def main():
     my_chain.add_block(data_1)
     my_chain.add_block(data_2)
     my_chain.print_chain()
-    my_chain.validate_chain()
 
     # Attempting to change the contents results in a broken chain
     my_chain.chain[1].data = ["Fake Data"]
     my_chain.print_chain()
-    my_chain.validate_chain()
 
 
 if __name__ == "__main__":

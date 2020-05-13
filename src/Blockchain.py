@@ -4,52 +4,37 @@ from Block import Block
 class Blockchain:
     def __init__(self):
         self.chain = []
+        self.difficulty = 4  # number of leading 0's needed for proof
         self.genesis_block()
 
     # Creates genesis block and appends to chain
     def genesis_block(self):
-        genesis_block = Block(["This is the genesis block"], "0")
-        genesis_block.generate_hash()
-        genesis_block.proof = self.proof_of_work(genesis_block)
+        genesis_block = Block(["This is the genesis block"], "0", self.difficulty)
         self.chain.append(genesis_block)
 
     # Creates block with data and appends to chain
     def add_block(self, data):
-        prev_hash = (self.chain[-1]).hash
-        new_block = Block(data, prev_hash)
-        new_block.generate_hash()
-        new_block.proof = self.proof_of_work(new_block)
+        prev_hash = (self.chain[-1]).generate_hash()
+        new_block = Block(data, prev_hash, self.difficulty)
         self.chain.append(new_block)
 
-    # Prints full contents of the blockchain
+    # Prints full contents of the blockchain and verifies links
     def print_chain(self):
         for i in range(len(self.chain)):
             print(f"Block {i}")
             self.chain[i].print_contents()
+        self.verify_chain()
 
     # Verifies linked hashes in chain
-    def validate_chain(self):
+    def verify_chain(self):
         for i in range(1, len(self.chain)):
             current = self.chain[i]
             previous = self.chain[i - 1]
             if current.hash != current.generate_hash():
-                print("Invalid chain: Current hash not equal to generated hash\n")
+                print(f"Invalid chain at block {i}: Block contents were changed!\n")
                 return False
             if current.prev_hash != previous.generate_hash():
-                print("Invalid chain: Previous hash was changed\n")
-                return False
-            if current.proof == "":
-                print(f"\nInvalid block {i}: Proof not generated")
+                print(f"Invalid chain at block {i}: Previous hash was changed\n")
                 return False
         print("Chain is valid!\n")
         return True
-
-    # Generates proof of work for block
-    @staticmethod
-    def proof_of_work(block, difficulty=2):  # difficulty: number of leading 0's needed for proof
-        proof = block.generate_hash()
-        while proof[:difficulty] != "0" * difficulty:
-            block.nonce += 1
-            proof = block.generate_hash()
-        block.nonce = 0
-        return proof

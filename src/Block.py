@@ -3,24 +3,29 @@ from hashlib import sha512
 
 
 class Block:
-    def __init__(self, data, prev_hash):
+    def __init__(self, data, prev_hash, difficulty):
         self.timestamp = datetime.now()
         self.data = data
         self.prev_hash = prev_hash
         self.nonce = 0
-        self.proof = ""
-        self.hash = self.generate_hash()
+        self.hash = self.proof_of_work(difficulty)
+
+    # Generates proof of work for block.
+    def proof_of_work(self, difficulty):
+        proof = self.generate_hash()
+        while proof[:difficulty] != "0" * difficulty:
+            self.nonce += 1
+            proof = self.generate_hash()
+        return proof
 
     # Produces hash from block contents
     def generate_hash(self):
         block_contents = str(self.timestamp) + str(self.data) + str(self.prev_hash) + str(self.nonce)
-        block_hash = sha512(block_contents.encode()).hexdigest()
-        return block_hash
+        return sha512(block_contents.encode()).hexdigest()
 
     def print_contents(self):
-        print("timestamp: ", self.timestamp)
-        print("data: ", self.data)
-        print("current hash: ", self.generate_hash())
-        print("previous hash: ", self.prev_hash)
-        if self.proof != "":
-            print(f"proof: {self.proof}\n")
+        print(f"timestamp: {self.timestamp}")
+        print(f"data: {self.data}")
+        print(f"nonce: {self.nonce}")
+        print(f"current hash: {self.generate_hash()}")
+        print(f"previous hash: {self.prev_hash}\n")
