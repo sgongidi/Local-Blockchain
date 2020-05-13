@@ -4,7 +4,7 @@ from Block import Block
 class Blockchain:
     def __init__(self):
         self.chain = []
-        self.difficulty = 4  # number of leading 0's needed for proof
+        self.difficulty = 3  # number of leading 0's needed for proof
         self.genesis_block()
 
     # Creates genesis block and appends to chain
