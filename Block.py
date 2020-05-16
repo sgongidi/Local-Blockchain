@@ -1,10 +1,10 @@
-from datetime import datetime
+from time import time
 from hashlib import sha512
 
 
 class Block:
     def __init__(self, data, prev_hash, difficulty):
-        self.timestamp = datetime.now()
+        self.timestamp = time()
         self.data = data
         self.prev_hash = prev_hash
         self.nonce = 0
